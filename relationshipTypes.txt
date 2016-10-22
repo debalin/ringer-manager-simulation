@@ -1,0 +1,4 @@
+family:0.4
+colleague:0.3
+friend:0.2
+stranger:0.1

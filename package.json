@@ -1,0 +1,14 @@
+{
+  "name": "ringer-manager",
+  "version": "0.0.1",
+  "description": "An implementation for the social benefit function for a sociall-aware ringer manager application.",
+  "main": "main.js",
+  "author": {
+    "name": "Debalin Das",
+    "email": "debalin90@gmail.com"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "request": "latest"
+  }
+}

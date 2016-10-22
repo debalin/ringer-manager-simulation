@@ -1,0 +1,15 @@
+Arwen:Family
+Bilbo:Friend
+Ceorl:Colleague
+Denethor:Stranger
+Elrond:Family
+Faramir:Friend
+Gandalf:Colleague
+Hurin:Stranger
+Isildur:Family
+Legolas:Friend
+Maggot:Colleague
+Nazgul:Stranger
+Orophin:Family
+Radagast:Friend
+Sauron:Colleague
