@@ -9,6 +9,6 @@
   },
   "license": "ISC",
   "devDependencies": {
-    "request": "latest"
+    "sync-request": "latest"
   }
 }

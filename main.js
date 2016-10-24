@@ -1,28 +1,84 @@
 //imports
 var fs = require("fs");
-var request = require("request");
+var request = require("sync-request");
 
 //constants
 var userID = "5004";
+var ringerModes = ['loud', 'vibrate', 'silent'];
+var baseURL = "http://yangtze.csc.ncsu.edu:9090/csc555/services.jsp?";
 
 var relationships = [];
 parseRelationships();
-console.log(relationships);
- 
+// console.log(relationships);
+
 var places = {};
 parsePlaces();
-console.log(places);
-  
+// console.log(places);
+
 var relationshipTypes = {};
 parseRelationshipTypes();
-console.log(relationshipTypes);
+// console.log(relationshipTypes);
 
 simulateVisits();
 
 function simulateVisits() {
   for (var place in places) {
+    console.log("Entering " + place + ".");
+    enter(place);
 
+    console.log("Getting all neighbors in " + place + ".");
+    var neighbors = listNeighbors();
+    
+    var call = requestCall();
+    console.log("Got call from " + call.callerName + ".");
+
+    var decidedResponse = calculateSocialBenefit(neighbors, call);
+
+    console.log("Ringer manager responded with mode " + decidedResponse + ".");
+    respondToCall(call, decidedResponse);
+
+    exit(place);
+    console.log("Exiting " + place + ".\n");
   }
+}
+
+function respondToCall(call, decidedResponse) {
+  var requestURL = baseURL + "action=responseCall&callId=" + call.callId + "&ringerMode=" + decidedResponse;
+  var res = request('GET', requestURL, {});
+  var feedback = (JSON.parse(res.body));
+  console.log(feedback);
+}
+
+function calculateSocialBenefit(neighbors, call) {
+  var response = "silent";
+
+  return response;
+}
+
+function requestCall() {
+  var requestURL = baseURL + "action=requestCall&userId=" + userID;
+  var res = request('GET', requestURL, {});
+  // console.log(JSON.stringify(JSON.parse(res.body)));
+  return (JSON.parse(res.body));
+}
+
+function listNeighbors() {
+  var requestURL = baseURL + "action=getNeighbors&userId=" + userID;
+  var res = request('GET', requestURL, {});
+  // console.log(JSON.stringify(JSON.parse(res.body)));
+  return (JSON.parse(res.body).user);
+}
+
+function enter(place) {
+  var requestURL = baseURL + "action=enterPlace&place=" + place + "&userId=" + userID + "&myMode=" + ringerModes[getRandomInt(0, 3)] + "&expectedMode=" + ringerModes[getRandomInt(0, 3)];
+  var res = request('GET', requestURL, {});
+  // console.log("Entering " + " " + JSON.stringify(res));
+}
+
+function exit(place) {
+  var requestURL = baseURL + "action=exitPlace&userId=" + userID;
+  var res = request('GET', requestURL, {});
+  // console.log("Exiting " + " " + JSON.stringify(res));
 }
 
 //get a list of relationships and their types, this should ideally be from a web service call
@@ -54,4 +110,10 @@ function parseRelationshipTypes() {
     var temp = relationshipType.split(":");
     relationshipTypes[temp[0]] = parseFloat(temp[1]);
   }
+}
+
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min;
 }
