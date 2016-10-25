@@ -1,6 +1,6 @@
 ### Introduction
 
-I have implemented a simulation of the ringer manager application. The application is coded in `Node.js` and the output can be seen over the command line. I will document the steps to run my program as well as a brief explanation (a detailed flow cum explanation can be seen along comments in my code) of the same and an intermediate report. 
+I have implemented a simulation of the ringer manager application. The application is coded in `Node.js` and the output can be seen over the command line. I will document the steps to run my program as well as a brief explanation (a detailed flow cum explanation can be seen along comments in my code) of the same and an intermediate report. The homework specification can be found at https://courses.ncsu.edu/csc555/lec/601/S/G2/App-G2.zip. 
 
 ### Instructions to run my program
 
