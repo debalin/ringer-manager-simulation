@@ -37,7 +37,17 @@ This function has been completely been implemented along with comments in the `m
 4. Add a component to the ringer mode property based on the place as well, depending upon the noise level of the place. If the noise level is from 0 to 2, then the `silent` ringer property gets some points added, 3 to 7 adds to `vibrate` and 8 to 10 adds to `loud`.    
 5. Find the maximum among the three ringer mode properties. If it is `silent` or `vibrate`, add a component for `vibrate` and `loud` ringer modes respectively based on the urgency of the caller. If the ringer mode chosen is loud, then no need to change it.   
 6. Find the maximum again and return that response.
-6. Basically, in this way every neighbor and caller and place votes with specific weights to the decision of the social ringer manager. And ultimately the highest votes among the three ringer modes wins.  
+6. Basically, in this way every neighbor and caller and place votes with specific weights to the decision of the social ringer manager. And ultimately the highest votes among the three ringer modes wins. 
+
+### Feedback
+
+Feedback is taken into account by incorporating the same into the weights of the relationships. The following things can happen:
+
+1. If the feedback was positive and the final decision was the same as the expected ringer mode of that user, then nothing is done. 
+2. If the feedback was positive, but the final decision was not the same, then the weight is reduced a bit, because the user seems unpredictable. 
+3. If the feedback was negative, but the final decision was the same as the expected ringer mode of that user, then the weight reduced a little more than the last case, because in this case the user is more unpredictable. 
+4. If the feedback was negative, and the final decision was not the same, then the weight is increased a little bit, so that next time he/she contributes more towards deciding the final response. Basically, giving him a chance to factor into the decision more. 
+5. If the feedback was neutral, then the weight is reduced a little, because this guy might not have much effect into deciding any response.   
 
 ### Conclusion
 
