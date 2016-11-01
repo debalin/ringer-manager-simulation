@@ -1,8 +1,8 @@
-hunt:vibrate
-eb2:vibrate
-carmichael:loud
-oval:loud
-seminar:silent
-lab:vibrate
-meeting:silent
-party:loud
+hunt:2
+eb2:4
+carmichael:7
+oval:8
+seminar:5
+lab:3
+meeting:5
+party:10

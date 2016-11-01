@@ -11,6 +11,7 @@ var callTypes = {
   casual: 0.2,
   none: 0.1
 };
+var stayCount = 5;
 
 var relationships = {};
 var relationshipIDs = {};
@@ -32,16 +33,18 @@ function simulateVisits() {
     console.log("Entering " + place + ".");
     enter(place);
 
-    console.log("Getting all neighbors in " + place + ".");
-    var neighbors = listNeighbors();
+    for (var i = 1; i <= stayCount; i++) {
+      console.log("Getting all neighbors in " + place + ".");
+      var neighbors = listNeighbors();
 
-    var call = requestCall();
-    console.log("Got call from " + call.callerName + ".");
+      var call = requestCall();
+      console.log("Got call from " + call.callerName + ".");
 
-    var decidedResponse = calculateSocialBenefit(neighbors, call, place);
+      var decidedResponse = calculateSocialBenefit(neighbors, call, place);
 
-    console.log("Ringer manager responded with mode " + decidedResponse + ".");
-    respondToCall(call, decidedResponse);
+      console.log("Ringer manager responded with mode " + decidedResponse + ".");
+      respondToCall(call, decidedResponse);
+    }
 
     exit(place);
     console.log("Exiting " + place + ".\n");
@@ -106,7 +109,7 @@ function calculateSocialBenefit(neighbors, call, place) {
     responseOptions[option] += weight * parseFloat(relationshipTypes[relationships[neighbor.name].relationship]); //the weight is multiplied with a relationship type weight, i.e. for family, their contribution would be more than strangers
   }
 
-  responseOptions[places[place]] += responseOptions[places[place]] * 0.5; //the place also has an effect
+  reactToPlaces(responseOptions, place);
   response = findMax(responseOptions);
 
   switch (response) { //if the response is silent or vibrate, accordingly accommodate the urgency of the call
@@ -122,6 +125,17 @@ function calculateSocialBenefit(neighbors, call, place) {
 
   console.log("Options are: " + JSON.stringify(responseOptions));
   return response;
+}
+
+//the place also has an effect
+function reactToPlaces(responseOptions, place) {
+  var noise = places[place];
+  if (noise <= 2)
+    responseOptions["silent"] += 0.5;
+  else if (noise <= 7)
+    responseOptions["vibrate"] += 0.5;
+  else
+    responseOptions["loud"] += 0.5;
 }
 
 function findMax(responseOptions) {
@@ -171,7 +185,7 @@ function parseRelationships() {
   }
 }
 
-//get a list of places and the default expected ringer mode there, this should ideally be from a web service call
+//get a list of places and their noise levels there
 function parsePlaces() {
   var fileContent = fs.readFileSync("places.txt", "utf8").split("\r\n");
   for (var place of fileContent) {
